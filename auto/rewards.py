@@ -2,7 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-
+import time
 
 class Rewards(webdriver.Edge):
     def __init__(self, teardown=False):
@@ -15,8 +15,11 @@ class Rewards(webdriver.Edge):
         if self.teardown:
             self.quit()
     
-    def landing_page(self):
+    def rewards_page(self):
         self.get("https://rewards.bing.com")
+
+    def search_page(self):
+        self.get('https://bing.com')
     
     def daily_boxes(self):
         daily1 = self.find_element(By.XPATH, '//*[@id="daily-sets"]/mee-card-group[1]/div/mee-card[1]')
@@ -43,3 +46,46 @@ class Rewards(webdriver.Edge):
 
         #Switch back to the old tab or window
             self.switch_to.window(original_window)
+
+    def searches(self):
+        from auto.phrases import top_search_terms as terms
+        wait = WebDriverWait(self, 10)
+        self.get("https://bing.com")
+        #search_button = self.find_element(By.ID, "search_icon")
+        #self.switch_to.alert.close()
+
+        for term in terms:
+            search_bar = self.find_element(By.ID, "sb_form_q")
+            search_bar.clear()
+            search_bar.send_keys(term)
+            search_bar.submit()
+            wait.until(EC.presence_of_element_located((By.CLASS_NAME,"points-container")))
+            wait.until(EC.presence_of_element_located((By.ID, "sb_form_q")))
+            #time.sleep(2)
+        self.close()
+
+    def activate(self):
+        self.get("https://rewards.bing.com")
+        wait = WebDriverWait(self, 10)
+        wait.until(EC.presence_of_element_located((By.CLASS_NAME,"c-card-content")))
+        #self.find_element(By.CLASS_NAME, "points-container").click()
+        #wait.until(EC.presence_of_element_located((By.CLASS_NAME,"promo_cont")))
+        boxes = self.find_elements(By.CLASS_NAME, "rewards-card-container")
+        #original_window = self.current_window_handle
+        print(boxes)
+        for box in boxes:
+            try:
+                box.click()
+            except:
+                pass
+        self.close()
+
+    def alert_handle(self):
+        try:
+            WebDriverWait(timeout=2).until(EC.alert_is_present())
+            self.switch_to().alert().dismiss()
+        except:
+            pass
+
+
+

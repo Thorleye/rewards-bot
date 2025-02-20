@@ -61,7 +61,7 @@ class Rewards(webdriver.Edge):
             search_bar.submit()
             wait.until(EC.presence_of_element_located((By.CLASS_NAME,"points-container")))
             wait.until(EC.presence_of_element_located((By.ID, "sb_form_q")))
-            #time.sleep(2)
+            time.sleep(5) # 5 seconds for points to register for standard search
         self.close()
 
     def activate(self):
@@ -78,7 +78,6 @@ class Rewards(webdriver.Edge):
                 box.click()
             except:
                 pass
-        self.close()
 
     def alert_handle(self):
         try:

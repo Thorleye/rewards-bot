@@ -1,6 +1,6 @@
 top_search_terms = [
     "weather today",
-    "news",
+    "green bay packers",
     "restaurants near me",
     "stock market update",
     "grand theft auto 6 news",
@@ -28,5 +28,5 @@ top_search_terms = [
     "Disney Plus",
     "PayPal",
     "Uber",
-    "Airbnb"
+    "Convert 100 CAD to USD"
 ]
